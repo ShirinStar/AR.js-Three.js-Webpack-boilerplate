@@ -1,8 +1,8 @@
 import './style.css'
-import * as THREE from 'three'
+import { OrbitControls  } from 'three/examples/jsm/controls/OrbitControls.js'
 
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
+console.log('called');
 
 const canvas = document.querySelector('canvas.webgl')
 
@@ -14,6 +14,7 @@ const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
 
+console.log('threex: ', THREEx);
 
 const sizes = {
     width: window.innerWidth,
@@ -52,6 +53,7 @@ const clock = new THREE.Clock()
 const animate = () =>
 {
     const elapsedTime = clock.getElapsedTime()
+    mesh.rotation.y += elapsedTime;
 
     controls.update()
 
@@ -61,3 +63,5 @@ const animate = () =>
 }
 
 animate()
+
+
