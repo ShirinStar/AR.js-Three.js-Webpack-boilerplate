@@ -12,9 +12,9 @@ module.exports = {
         path: path.resolve(__dirname, '../dist')
     },
     devtool: 'source-map',
-    externals: {
-      arjs: 'ar.js',
-    },
+    // externals: {
+    //   arjs: 'ar.js',
+    // },
     plugins:
     [
      
