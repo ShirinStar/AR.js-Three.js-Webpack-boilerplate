@@ -53,7 +53,7 @@ const clock = new THREE.Clock()
 const animate = () =>
 {
     const elapsedTime = clock.getElapsedTime()
-    mesh.rotation.y += elapsedTime;
+    //mesh.rotation.y += elapsedTime;
 
     controls.update()
 
