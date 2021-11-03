@@ -1,5 +1,4 @@
 import './style.css'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
 const sizes = {
   width: window.innerWidth,
@@ -14,7 +13,6 @@ const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 
 camera.position.z = 2
 scene.add(camera);
 
-
 const renderer = new THREE.WebGLRenderer({
   canvas: canvas,
   antialias: true,
@@ -25,12 +23,15 @@ renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 
-//AR.JS
+////////AR.JS/////////
 // setup arToolkitSource
 const arToolkitSource = new THREEx.ArToolkitSource({
   sourceType: 'webcam',
-  // sourceWidth: 660,
-  // sourceHeight: 360,
+
+  //uncomment these to fit camera to mobile
+  // sourceWidth: window.innerHeight,
+  // sourceHeight: window.innerWidth,
+
   displayWidth: window.innerWidth,
   displayHeight: window.innerHeight,
 });
@@ -60,19 +61,16 @@ window.addEventListener('resize', function () {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 });
 
-
 // setup arToolkitContext
-// create atToolkitContext
 const arToolkitContext = new THREEx.ArToolkitContext({
   cameraParametersUrl: 'camera_para.dat', //from https://github.com/jeromeetienne/AR.js/blob/master/data/data/camera_para.dat
-  detectionMode: 'color_and_matrix',
+  detectionMode: 'mono',
 });
 
 // copy projection matrix to camera when initialization complete
 arToolkitContext.init(function onCompleted() {
   camera.projectionMatrix.copy(arToolkitContext.getProjectionMatrix());
 });
-
 
 // setup markerRoots
 // build markerControls
@@ -81,10 +79,11 @@ scene.add(markerRoot);
 
 let markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
   type: 'pattern',
-  patternUrl: "pattern-marker.patt",
+  patternUrl: "arjs-marker.patt", //https://jeromeetienne.github.io/AR.js/three.js/examples/marker-training/examples/generator.html
+  hangeMatrixMode: 'cameraTransformMatrix'
 })
 
-//scene content
+///////scene content///////
 const geometry = new THREE.BoxBufferGeometry(1, 2, 2);
 const material = new THREE.MeshNormalMaterial({
   transparent: true,
@@ -93,8 +92,7 @@ const material = new THREE.MeshNormalMaterial({
 });
 
 const mesh = new THREE.Mesh(geometry, material);
-mesh.position.y = 0.5;
-
+// mesh.position.y = 0.5;
 
 markerRoot.add(mesh);
 
